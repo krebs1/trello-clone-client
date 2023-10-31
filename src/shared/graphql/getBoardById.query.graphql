@@ -1,0 +1,27 @@
+query FindBoardById ($id: String!) {
+    findBoardById(_id: $id) {
+        _id
+        background
+        name
+        labels {
+            _id
+            colorId
+            text
+        }
+        lists {
+            _id
+            name
+            cards {
+                _id
+                description
+                dueDate
+                name
+                startDate
+                labels
+            }
+        }
+        members {
+            userId
+        }
+    }
+}

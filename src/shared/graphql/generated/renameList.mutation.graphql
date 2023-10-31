@@ -1,0 +1,30 @@
+mutation RenameList ($boardId: String!, $listId: String!, $name: String!) {
+    renameList(
+        renameListInput: {listId: $listId, name: $name, boardId: $boardId}
+    ) {
+        _id
+        background
+        name
+        labels {
+            _id
+            colorId
+            text
+        }
+        lists {
+            _id
+            name
+            cards {
+                _id
+                description
+                dueDate
+                name
+                startDate
+                labels
+            }
+        }
+        members {
+            userId
+            _id
+        }
+    }
+}

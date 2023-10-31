@@ -1,0 +1,27 @@
+query FindCardById($_id: String!) {
+    findCardById(_id: $_id) {
+        _id
+        name
+        labels {
+            _id
+            colorId
+            text
+        }
+        lists {
+            _id
+            name
+            cards {
+                _id
+                description
+                dueDate
+                labels
+                name
+                startDate
+            }
+        }
+        members {
+            _id
+            userId
+        }
+    }
+}

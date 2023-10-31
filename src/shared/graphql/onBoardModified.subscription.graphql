@@ -1,0 +1,28 @@
+subscription BoardModified($id: String!) {
+    boardModified(boardId: $id) {
+        _id
+        background
+        name
+        lists {
+            _id
+            name
+            cards {
+                _id
+                description
+                dueDate
+                labels
+                name
+                startDate
+            }
+        }
+        labels {
+            _id
+            colorId
+            text
+        }
+        members {
+            _id
+            userId
+        }
+    }
+}

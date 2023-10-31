@@ -1,0 +1,28 @@
+mutation CreateList($boardId: String!, $name: String!) {
+    createList(
+        createListInput: { boardId: $boardId, name: $name }
+    ) {
+        _id
+        background
+        name
+        labels {
+            _id
+            colorId
+            text
+        }
+        lists {
+            _id
+            name
+            cards {
+                _id
+                description
+                dueDate
+                name
+                startDate
+            }
+        }
+        members {
+            userId
+        }
+    }
+}

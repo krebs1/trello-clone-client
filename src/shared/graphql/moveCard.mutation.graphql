@@ -1,0 +1,36 @@
+mutation MoveCard($boardId: String!, $destinationIndex: Float!, $destinationListId: String!, $sourceCardId: String!, $sourceListId: String!) {
+    moveCard(
+        moveCardInput: {
+            boardId: $boardId,
+            destinationIndex: $destinationIndex,
+            destinationListId: $destinationListId,
+            sourceCardId: $sourceCardId,
+            sourceListId: $sourceListId,
+        }
+    ) {
+        _id
+        background
+        name
+        labels {
+            _id
+            colorId
+            text
+        }
+        lists {
+            _id
+            name
+            cards {
+                _id
+                description
+                dueDate
+                labels
+                name
+                startDate
+            }
+        }
+        members {
+            _id
+            userId
+        }
+    }
+}
