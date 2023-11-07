@@ -36,6 +36,17 @@ export type AddMemberToBoardInput = {
   userId: Scalars['String']['input'];
 };
 
+/** Background entity */
+export type Background = {
+  __typename?: 'Background';
+  /** Background id */
+  _id: Scalars['String']['output'];
+  /** Image path */
+  imagePath: Scalars['String']['output'];
+  /** Preview path */
+  previewPath: Scalars['String']['output'];
+};
+
 /** Board entity */
 export type Board = {
   __typename?: 'Board';
@@ -68,6 +79,17 @@ export type Card = {
   name: Scalars['String']['output'];
   /** Card start date */
   startDate?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ChangeCardDescriptionInput = {
+  /** Board id */
+  boardId: Scalars['String']['input'];
+  /** Card id */
+  cardId: Scalars['String']['input'];
+  /** Card description */
+  description: Scalars['String']['input'];
+  /** List id */
+  listId: Scalars['String']['input'];
 };
 
 export type ChangeCardOrderInput = {
@@ -182,7 +204,7 @@ export type Label = {
   /** Label id */
   _id: Scalars['String']['output'];
   /** Label color id */
-  colorId: Scalars['String']['output'];
+  colorId?: Maybe<Scalars['String']['output']>;
   /** Label text */
   text?: Maybe<Scalars['String']['output']>;
 };
@@ -224,6 +246,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addLabelToCard: Board;
   addMemberToBoard: Board;
+  changeCardDescription: Board;
   changeCardOrder: Board;
   createBoard: Board;
   createCard: Board;
@@ -250,6 +273,11 @@ export type MutationAddLabelToCardArgs = {
 
 export type MutationAddMemberToBoardArgs = {
   addMemberToBoardInput: AddMemberToBoardInput;
+};
+
+
+export type MutationChangeCardDescriptionArgs = {
+  changeCardDescriptionInput: ChangeCardDescriptionInput;
 };
 
 
@@ -334,6 +362,7 @@ export type MutationRenameListArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  findAllBackgrounds: Array<Background>;
   findAllBoards: Array<Board>;
   findAllColors: Array<Color>;
   findBoardById: Board;
@@ -405,6 +434,16 @@ export type SubscriptionBoardModifiedArgs = {
   boardId: Scalars['String']['input'];
 };
 
+export type ChangeCardDescriptionMutationVariables = Exact<{
+  boardId: Scalars['String']['input'];
+  listId: Scalars['String']['input'];
+  cardId: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+}>;
+
+
+export type ChangeCardDescriptionMutation = { __typename?: 'Mutation', changeCardDescription: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
+
 export type CreateCardMutationVariables = Exact<{
   boardId: Scalars['String']['input'];
   listId: Scalars['String']['input'];
@@ -412,7 +451,16 @@ export type CreateCardMutationVariables = Exact<{
 }>;
 
 
-export type CreateCardMutation = { __typename?: 'Mutation', createCard: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
+export type CreateCardMutation = { __typename?: 'Mutation', createCard: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
+
+export type CreateLabelMutationVariables = Exact<{
+  boardId: Scalars['String']['input'];
+  colorId: Scalars['String']['input'];
+  text: Scalars['String']['input'];
+}>;
+
+
+export type CreateLabelMutation = { __typename?: 'Mutation', createLabel: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
 
 export type CreateListMutationVariables = Exact<{
   boardId: Scalars['String']['input'];
@@ -420,30 +468,40 @@ export type CreateListMutationVariables = Exact<{
 }>;
 
 
-export type CreateListMutation = { __typename?: 'Mutation', createList: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
+export type CreateListMutation = { __typename?: 'Mutation', createList: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
 
-export type RenameListMutationVariables = Exact<{
-  boardId: Scalars['String']['input'];
-  listId: Scalars['String']['input'];
-  name: Scalars['String']['input'];
+export type CreateBoardMutationVariables = Exact<{
+  createBoardInput: CreateBoardInput;
 }>;
 
 
-export type RenameListMutation = { __typename?: 'Mutation', renameList: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string, _id: string }> | null } };
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
 
 export type FindBoardByIdQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type FindBoardByIdQuery = { __typename?: 'Query', findBoardById: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
+export type FindBoardByIdQuery = { __typename?: 'Query', findBoardById: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string }> | null } };
+
+export type FindBoardByUserIdQueryVariables = Exact<{
+  uid: Scalars['String']['input'];
+}>;
+
+
+export type FindBoardByUserIdQuery = { __typename?: 'Query', findBoardByUserId: Array<{ __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null }> };
 
 export type FindCardByIdQueryVariables = Exact<{
   _id: Scalars['String']['input'];
 }>;
 
 
-export type FindCardByIdQuery = { __typename?: 'Query', findCardById: { __typename?: 'Board', _id: string, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
+export type FindCardByIdQuery = { __typename?: 'Query', findCardById: { __typename?: 'Board', _id: string, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
+
+export type FindAllColorsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindAllColorsQuery = { __typename?: 'Query', findAllColors: Array<{ __typename?: 'Color', color: string, name: string, _id: string }> };
 
 export type MoveCardMutationVariables = Exact<{
   boardId: Scalars['String']['input'];
@@ -454,14 +512,14 @@ export type MoveCardMutationVariables = Exact<{
 }>;
 
 
-export type MoveCardMutation = { __typename?: 'Mutation', moveCard: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
+export type MoveCardMutation = { __typename?: 'Mutation', moveCard: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
 
 export type BoardModifiedSubscriptionVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type BoardModifiedSubscription = { __typename?: 'Subscription', boardModified: { __typename?: 'Board', _id: string, background?: string | null, name: string, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
+export type BoardModifiedSubscription = { __typename?: 'Subscription', boardModified: { __typename?: 'Board', _id: string, background?: string | null, name: string, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
 
 export type RenameCardMutationVariables = Exact<{
   boardId: Scalars['String']['input'];
@@ -471,7 +529,16 @@ export type RenameCardMutationVariables = Exact<{
 }>;
 
 
-export type RenameCardMutation = { __typename?: 'Mutation', renameCard: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string, _id: string }> | null } };
+export type RenameCardMutation = { __typename?: 'Mutation', renameCard: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string, _id: string }> | null } };
+
+export type RenameListMutationVariables = Exact<{
+  boardId: Scalars['String']['input'];
+  listId: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+}>;
+
+
+export type RenameListMutation = { __typename?: 'Mutation', renameList: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, name: string, startDate?: any | null, labels?: Array<string> | null }> | null }> | null, members?: Array<{ __typename?: 'Member', userId: string, _id: string }> | null } };
 
 export type ChangeCardOrderMutationVariables = Exact<{
   boardId: Scalars['String']['input'];
@@ -481,9 +548,70 @@ export type ChangeCardOrderMutationVariables = Exact<{
 }>;
 
 
-export type ChangeCardOrderMutation = { __typename?: 'Mutation', changeCardOrder: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId: string, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
+export type ChangeCardOrderMutation = { __typename?: 'Mutation', changeCardOrder: { __typename?: 'Board', _id: string, background?: string | null, name: string, labels?: Array<{ __typename?: 'Label', _id: string, colorId?: string | null, text?: string | null }> | null, lists?: Array<{ __typename?: 'List', _id: string, name: string, cards?: Array<{ __typename?: 'Card', _id: string, description?: string | null, dueDate?: any | null, labels?: Array<string> | null, name: string, startDate?: any | null }> | null }> | null, members?: Array<{ __typename?: 'Member', _id: string, userId: string }> | null } };
 
 
+export const ChangeCardDescriptionDocument = gql`
+    mutation ChangeCardDescription($boardId: String!, $listId: String!, $cardId: String!, $description: String!) {
+  changeCardDescription(
+    changeCardDescriptionInput: {boardId: $boardId, listId: $listId, cardId: $cardId, description: $description}
+  ) {
+    _id
+    background
+    name
+    labels {
+      _id
+      colorId
+      text
+    }
+    lists {
+      _id
+      name
+      cards {
+        _id
+        description
+        dueDate
+        labels
+        name
+        startDate
+      }
+    }
+    members {
+      _id
+      userId
+    }
+  }
+}
+    `;
+export type ChangeCardDescriptionMutationFn = Apollo.MutationFunction<ChangeCardDescriptionMutation, ChangeCardDescriptionMutationVariables>;
+
+/**
+ * __useChangeCardDescriptionMutation__
+ *
+ * To run a mutation, you first call `useChangeCardDescriptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeCardDescriptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeCardDescriptionMutation, { data, loading, error }] = useChangeCardDescriptionMutation({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *      listId: // value for 'listId'
+ *      cardId: // value for 'cardId'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useChangeCardDescriptionMutation(baseOptions?: Apollo.MutationHookOptions<ChangeCardDescriptionMutation, ChangeCardDescriptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeCardDescriptionMutation, ChangeCardDescriptionMutationVariables>(ChangeCardDescriptionDocument, options);
+      }
+export type ChangeCardDescriptionMutationHookResult = ReturnType<typeof useChangeCardDescriptionMutation>;
+export type ChangeCardDescriptionMutationResult = Apollo.MutationResult<ChangeCardDescriptionMutation>;
+export type ChangeCardDescriptionMutationOptions = Apollo.BaseMutationOptions<ChangeCardDescriptionMutation, ChangeCardDescriptionMutationVariables>;
 export const CreateCardDocument = gql`
     mutation CreateCard($boardId: String!, $listId: String!, $name: String!) {
   createCard(createCardInput: {boardId: $boardId, listId: $listId, name: $name}) {
@@ -541,6 +669,65 @@ export function useCreateCardMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateCardMutationHookResult = ReturnType<typeof useCreateCardMutation>;
 export type CreateCardMutationResult = Apollo.MutationResult<CreateCardMutation>;
 export type CreateCardMutationOptions = Apollo.BaseMutationOptions<CreateCardMutation, CreateCardMutationVariables>;
+export const CreateLabelDocument = gql`
+    mutation CreateLabel($boardId: String!, $colorId: String!, $text: String!) {
+  createLabel(
+    createLabelInput: {boardId: $boardId, colorId: $colorId, text: $text}
+  ) {
+    _id
+    background
+    name
+    labels {
+      _id
+      colorId
+      text
+    }
+    lists {
+      _id
+      name
+      cards {
+        _id
+        description
+        dueDate
+        name
+        startDate
+        labels
+      }
+    }
+    members {
+      userId
+    }
+  }
+}
+    `;
+export type CreateLabelMutationFn = Apollo.MutationFunction<CreateLabelMutation, CreateLabelMutationVariables>;
+
+/**
+ * __useCreateLabelMutation__
+ *
+ * To run a mutation, you first call `useCreateLabelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLabelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLabelMutation, { data, loading, error }] = useCreateLabelMutation({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *      colorId: // value for 'colorId'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useCreateLabelMutation(baseOptions?: Apollo.MutationHookOptions<CreateLabelMutation, CreateLabelMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateLabelMutation, CreateLabelMutationVariables>(CreateLabelDocument, options);
+      }
+export type CreateLabelMutationHookResult = ReturnType<typeof useCreateLabelMutation>;
+export type CreateLabelMutationResult = Apollo.MutationResult<CreateLabelMutation>;
+export type CreateLabelMutationOptions = Apollo.BaseMutationOptions<CreateLabelMutation, CreateLabelMutationVariables>;
 export const CreateListDocument = gql`
     mutation CreateList($boardId: String!, $name: String!) {
   createList(createListInput: {boardId: $boardId, name: $name}) {
@@ -596,9 +783,9 @@ export function useCreateListMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateListMutationHookResult = ReturnType<typeof useCreateListMutation>;
 export type CreateListMutationResult = Apollo.MutationResult<CreateListMutation>;
 export type CreateListMutationOptions = Apollo.BaseMutationOptions<CreateListMutation, CreateListMutationVariables>;
-export const RenameListDocument = gql`
-    mutation RenameList($boardId: String!, $listId: String!, $name: String!) {
-  renameList(renameListInput: {listId: $listId, name: $name, boardId: $boardId}) {
+export const CreateBoardDocument = gql`
+    mutation CreateBoard($createBoardInput: CreateBoardInput!) {
+  createBoard(createBoardInput: $createBoardInput) {
     _id
     background
     name
@@ -621,39 +808,36 @@ export const RenameListDocument = gql`
     }
     members {
       userId
-      _id
     }
   }
 }
     `;
-export type RenameListMutationFn = Apollo.MutationFunction<RenameListMutation, RenameListMutationVariables>;
+export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation, CreateBoardMutationVariables>;
 
 /**
- * __useRenameListMutation__
+ * __useCreateBoardMutation__
  *
- * To run a mutation, you first call `useRenameListMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRenameListMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBoardMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [renameListMutation, { data, loading, error }] = useRenameListMutation({
+ * const [createBoardMutation, { data, loading, error }] = useCreateBoardMutation({
  *   variables: {
- *      boardId: // value for 'boardId'
- *      listId: // value for 'listId'
- *      name: // value for 'name'
+ *      createBoardInput: // value for 'createBoardInput'
  *   },
  * });
  */
-export function useRenameListMutation(baseOptions?: Apollo.MutationHookOptions<RenameListMutation, RenameListMutationVariables>) {
+export function useCreateBoardMutation(baseOptions?: Apollo.MutationHookOptions<CreateBoardMutation, CreateBoardMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RenameListMutation, RenameListMutationVariables>(RenameListDocument, options);
+        return Apollo.useMutation<CreateBoardMutation, CreateBoardMutationVariables>(CreateBoardDocument, options);
       }
-export type RenameListMutationHookResult = ReturnType<typeof useRenameListMutation>;
-export type RenameListMutationResult = Apollo.MutationResult<RenameListMutation>;
-export type RenameListMutationOptions = Apollo.BaseMutationOptions<RenameListMutation, RenameListMutationVariables>;
+export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMutation>;
+export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
+export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
 export const FindBoardByIdDocument = gql`
     query FindBoardById($id: String!) {
   findBoardById(_id: $id) {
@@ -711,6 +895,64 @@ export function useFindBoardByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FindBoardByIdQueryHookResult = ReturnType<typeof useFindBoardByIdQuery>;
 export type FindBoardByIdLazyQueryHookResult = ReturnType<typeof useFindBoardByIdLazyQuery>;
 export type FindBoardByIdQueryResult = Apollo.QueryResult<FindBoardByIdQuery, FindBoardByIdQueryVariables>;
+export const FindBoardByUserIdDocument = gql`
+    query FindBoardByUserId($uid: String!) {
+  findBoardByUserId(_id: $uid) {
+    _id
+    background
+    name
+    labels {
+      _id
+      colorId
+      text
+    }
+    lists {
+      _id
+      name
+      cards {
+        _id
+        description
+        dueDate
+        labels
+        name
+        startDate
+      }
+    }
+    members {
+      _id
+      userId
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindBoardByUserIdQuery__
+ *
+ * To run a query within a React component, call `useFindBoardByUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindBoardByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindBoardByUserIdQuery({
+ *   variables: {
+ *      uid: // value for 'uid'
+ *   },
+ * });
+ */
+export function useFindBoardByUserIdQuery(baseOptions: Apollo.QueryHookOptions<FindBoardByUserIdQuery, FindBoardByUserIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindBoardByUserIdQuery, FindBoardByUserIdQueryVariables>(FindBoardByUserIdDocument, options);
+      }
+export function useFindBoardByUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindBoardByUserIdQuery, FindBoardByUserIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindBoardByUserIdQuery, FindBoardByUserIdQueryVariables>(FindBoardByUserIdDocument, options);
+        }
+export type FindBoardByUserIdQueryHookResult = ReturnType<typeof useFindBoardByUserIdQuery>;
+export type FindBoardByUserIdLazyQueryHookResult = ReturnType<typeof useFindBoardByUserIdLazyQuery>;
+export type FindBoardByUserIdQueryResult = Apollo.QueryResult<FindBoardByUserIdQuery, FindBoardByUserIdQueryVariables>;
 export const FindCardByIdDocument = gql`
     query FindCardById($_id: String!) {
   findCardById(_id: $_id) {
@@ -768,6 +1010,42 @@ export function useFindCardByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type FindCardByIdQueryHookResult = ReturnType<typeof useFindCardByIdQuery>;
 export type FindCardByIdLazyQueryHookResult = ReturnType<typeof useFindCardByIdLazyQuery>;
 export type FindCardByIdQueryResult = Apollo.QueryResult<FindCardByIdQuery, FindCardByIdQueryVariables>;
+export const FindAllColorsDocument = gql`
+    query FindAllColors {
+  findAllColors {
+    color
+    name
+    _id
+  }
+}
+    `;
+
+/**
+ * __useFindAllColorsQuery__
+ *
+ * To run a query within a React component, call `useFindAllColorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllColorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllColorsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFindAllColorsQuery(baseOptions?: Apollo.QueryHookOptions<FindAllColorsQuery, FindAllColorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllColorsQuery, FindAllColorsQueryVariables>(FindAllColorsDocument, options);
+      }
+export function useFindAllColorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllColorsQuery, FindAllColorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllColorsQuery, FindAllColorsQueryVariables>(FindAllColorsDocument, options);
+        }
+export type FindAllColorsQueryHookResult = ReturnType<typeof useFindAllColorsQuery>;
+export type FindAllColorsLazyQueryHookResult = ReturnType<typeof useFindAllColorsLazyQuery>;
+export type FindAllColorsQueryResult = Apollo.QueryResult<FindAllColorsQuery, FindAllColorsQueryVariables>;
 export const MoveCardDocument = gql`
     mutation MoveCard($boardId: String!, $destinationIndex: Float!, $destinationListId: String!, $sourceCardId: String!, $sourceListId: String!) {
   moveCard(
@@ -944,6 +1222,64 @@ export function useRenameCardMutation(baseOptions?: Apollo.MutationHookOptions<R
 export type RenameCardMutationHookResult = ReturnType<typeof useRenameCardMutation>;
 export type RenameCardMutationResult = Apollo.MutationResult<RenameCardMutation>;
 export type RenameCardMutationOptions = Apollo.BaseMutationOptions<RenameCardMutation, RenameCardMutationVariables>;
+export const RenameListDocument = gql`
+    mutation RenameList($boardId: String!, $listId: String!, $name: String!) {
+  renameList(renameListInput: {listId: $listId, name: $name, boardId: $boardId}) {
+    _id
+    background
+    name
+    labels {
+      _id
+      colorId
+      text
+    }
+    lists {
+      _id
+      name
+      cards {
+        _id
+        description
+        dueDate
+        name
+        startDate
+        labels
+      }
+    }
+    members {
+      userId
+      _id
+    }
+  }
+}
+    `;
+export type RenameListMutationFn = Apollo.MutationFunction<RenameListMutation, RenameListMutationVariables>;
+
+/**
+ * __useRenameListMutation__
+ *
+ * To run a mutation, you first call `useRenameListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameListMutation, { data, loading, error }] = useRenameListMutation({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *      listId: // value for 'listId'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useRenameListMutation(baseOptions?: Apollo.MutationHookOptions<RenameListMutation, RenameListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RenameListMutation, RenameListMutationVariables>(RenameListDocument, options);
+      }
+export type RenameListMutationHookResult = ReturnType<typeof useRenameListMutation>;
+export type RenameListMutationResult = Apollo.MutationResult<RenameListMutation>;
+export type RenameListMutationOptions = Apollo.BaseMutationOptions<RenameListMutation, RenameListMutationVariables>;
 export const ChangeCardOrderDocument = gql`
     mutation ChangeCardOrder($boardId: String!, $listId: String!, $firstIndex: Float!, $secondIndex: Float!) {
   changeCardOrder(

@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {BoardPage} from "@/src/pages/BoardPage";
 import {
   BoardModifiedDocument,
@@ -8,6 +8,7 @@ import {
   BoardModifiedSubscriptionVariables,
   useFindBoardByIdQuery
 } from '@/src/shared/graphql/generated/schema'
+import {currentBoardVar} from "@/src/shared/lib/apollo-wrapper";
 
 const Page = ({params}: { params: { slug: string } }) => {
   const {
@@ -18,6 +19,10 @@ const Page = ({params}: { params: { slug: string } }) => {
       id: params.slug
     }
   })
+
+  useEffect(() => {
+    findBoardById ? currentBoardVar(findBoardById!) : currentBoardVar(null)
+  }, [findBoardById]);
 
   const subscribeToBoardModified = useCallback(
     () => subscribeToMore<BoardModifiedSubscription, BoardModifiedSubscriptionVariables>({

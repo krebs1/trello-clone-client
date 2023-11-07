@@ -1,35 +1,55 @@
 'use client'
 
 import {Box, Button, CircularProgress, CssBaseline, Grid, Link, Typography} from '@mui/material';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AddIcon from "@mui/icons-material/Add";
 import {useQuery, gql, useLazyQuery} from "@apollo/client";
 import {useSession} from "next-auth/react";
 import {CreateModal} from '../CreateModal';
 import {findBoardByUserIdQuery} from "@/src/pages/BoardsPage/modules/BoardsList/gql/findBoardByUserIdQuery";
+import {useFindBoardByUserIdLazyQuery} from "@/src/shared/graphql/generated/schema";
 
 const BoardsList = () => {
   const {data: session, status, update} = useSession();
-  const {loading, error, data, refetch} = useQuery(findBoardByUserIdQuery, {
-    variables: {
-      // @ts-ignore
-      uid: session?.user.id
-    }
-  })
+  const [getBoards, {data, loading, refetch, error}] = useFindBoardByUserIdLazyQuery();
 
   const [isCreateBoardModalOpened, setIsCreateBoardModalOpened] = useState<boolean>(false);
+
+  useEffect(() => {
+    if(status === 'authenticated') {
+      getBoards(
+        {
+          variables: {
+            // @ts-ignore
+            uid: session?.user.id
+          }
+        }
+      );
+    }
+  }, [
+    getBoards,
+    // @ts-ignore
+    session?.user.id,
+    status
+  ]);
 
   if (error) return (<p>{error.message}</p>);
 
   return (
     <Box className='tw-p-3 tw-w-full'>
       {
-        loading &&
+        (loading || status === 'loading') &&
           <Box className='tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center'>
               <CircularProgress/>
           </Box>
       }
-      {data &&
+      {
+        (status === 'unauthenticated') &&
+          <Box className='tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center'>
+              <p>Вы не авторизованы</p>
+          </Box>
+      }
+      {(data && status === 'authenticated') &&
           <>
               <CreateModal open={isCreateBoardModalOpened} onClose={() => {
                 setIsCreateBoardModalOpened(false)
@@ -63,7 +83,6 @@ const BoardsList = () => {
       }
     </Box>
   )
-    ;
 };
 
 export default BoardsList;

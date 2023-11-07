@@ -1,0 +1,7 @@
+query FindAllColors {
+    findAllColors {
+        color
+        name
+        _id
+    }
+}

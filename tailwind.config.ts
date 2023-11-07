@@ -19,6 +19,7 @@ const config: Config = {
       colors: {
         'list-bg': '#101204',
         'card-bg': '#22272B',
+        'card-elem': '#3B444C',
         'text-light': '#dadade',
         'text-subtitle': '#B6C2CF'
       }

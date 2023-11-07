@@ -4,7 +4,7 @@ import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
 import {createClient} from "graphql-ws";
 import {getMainDefinition} from "@apollo/client/utilities";
 
-import {ApolloLink, HttpLink, split} from '@apollo/client'
+import {ApolloLink, HttpLink, makeVar, split} from '@apollo/client'
 import {
   NextSSRApolloClient,
   ApolloNextAppProvider,
@@ -12,7 +12,9 @@ import {
   SSRMultipartLink
 } from '@apollo/experimental-nextjs-app-support/ssr'
 import React from "react";
+import {FindBoardByIdQuery} from "@/src/shared/graphql/generated/schema";
 
+export const currentBoardVar = makeVar<FindBoardByIdQuery['findBoardById'] | null>(null);
 
 function makeClient() {
   const httpLink = new HttpLink({

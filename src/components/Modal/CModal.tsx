@@ -7,30 +7,29 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
 };
 
 interface Props {
   open: boolean,
   onClose: () => void,
   header: string,
-  children: React.ReactNode
+  children: React.ReactNode,
+  className?: string
 }
 
-const CModal: FC<Props> = ({open = false, onClose, header = '', children}) => {
+const CModal: FC<Props> = ({open = false, onClose, header = '', children, className=''}) => {
   return (
     <Modal open={open}
            onClose={onClose}
     >
-      <Box component='section' sx={style} className='tw-rounded tw-p-4'>
-        <header className='tw-flex tw-flex-row tw-items-center tw-justify-between tw-mb-2'>
+      <Box component='section' sx={style} className={'tw-rounded-lg tw-p-4 tw-bg-card-bg' +` ${className}`}>
+        <header className='tw-flex tw-flex-row tw-items-center tw-justify-between tw-mb-1'>
           {
             header &&
-              <Typography variant='h5' className='tw-mr-1'>{header}</Typography>
+              <Typography variant='h6' className='tw-mr-1 tw-text-text-light'>{header}</Typography>
           }
-          <IconButton onClick={onClose}><CloseIcon/></IconButton>
+          <IconButton className='tw-text-text-light' onClick={onClose}><CloseIcon/></IconButton>
         </header>
-        <Divider className='tw-mb-1'/>
         <main>
           {children}
         </main>

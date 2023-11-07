@@ -1,9 +1,7 @@
-import {AuthOptions, User} from 'next-auth'
-import Credentials from 'next-auth/providers/credentials'
+import {AuthOptions} from 'next-auth'
 import Google from 'next-auth/providers/google'
 import {MongoDBAdapter} from '@auth/mongodb-adapter'
 import clientPromise from '@/src/shared/lib/next-auth/adapters/mongodb/connection'
-import bcrypt from 'bcrypt'
 
 export const authCfg: AuthOptions = {
   adapter: MongoDBAdapter(clientPromise),

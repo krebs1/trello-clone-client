@@ -1,0 +1,33 @@
+mutation CreateLabel($boardId: String!, $colorId: String!, $text: String!) {
+    createLabel(
+        createLabelInput: {
+            boardId: $boardId
+            colorId: $colorId
+            text: $text
+        }
+    ) {
+        _id
+        background
+        name
+        labels {
+            _id
+            colorId
+            text
+        }
+        lists {
+            _id
+            name
+            cards {
+                _id
+                description
+                dueDate
+                name
+                startDate
+                labels
+            }
+        }
+        members {
+            userId
+        }
+    }
+}

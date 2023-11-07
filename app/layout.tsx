@@ -6,7 +6,6 @@ import React from 'react'
 import {Header} from '@/src/modules/Header'
 import {AuthProvider} from '@/src/shared/lib/next-auth/auth-provider'
 import {ApolloWrapper} from "@/src/shared/lib/apollo-wrapper";
-import ThemeRegistry from '@/src/shared/lib/mui/ThemeRegistry'
 import InjectTailwind from '@/src/shared/lib/mui/InjectTailwind'
 
 const inter = Inter({subsets: ['latin']})

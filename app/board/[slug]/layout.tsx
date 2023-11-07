@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react';
 
-export default async function Layout(
-  props: {
-    children: React.ReactNode,
-    card: React.ReactNode
-  }
-) {
+const Layout = (props: { children: React.ReactNode, card: React.ReactNode }) => {
   return (
     <>
-      {props.children}
-      {props.card}
+      {
+        props.children
+      }
+      {
+        props.card
+      }
     </>
-  )
-}
+  );
+};
+
+export default Layout;

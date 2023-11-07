@@ -5,7 +5,8 @@ import {useFormik} from "formik";
 import {useSession} from "next-auth/react";
 import {createSchema} from "@/src/pages/BoardsPage/modules/CreateModal/yup/createSchema";
 import {useMutation} from "@apollo/client";
-import {createBoardMutation} from "@/src/pages/BoardsPage/modules/CreateModal/gql/createBoardMutation";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import {LeftContentButton} from "@/src/ui/LeftContentButton";
 
 interface Props {
   open: boolean,
@@ -48,23 +49,44 @@ const CreateModal: FC<Props> = ({open = false, onClose, onCreate}) => {
           formik.handleSubmit()
         }}
       >
-        <TextField
-          margin='normal'
-          required
-          fullWidth
-          autoFocus
-          id='name'
-          name='name'
-          label='Название'
-          type='text'
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
+        <TextField sx={{
+          "& .MuiOutlinedInput-root.Mui-focused": {
+            "& > fieldset": {
+              border: "1px solid #1976D2"
+            }
+          },
+          "& .MuiOutlinedInput-root": {
+            "& > input": {
+              fontSize: "14px",
+              padding: "0.375rem",
+              paddingLeft: "0.750rem"
+            },
+            "& > fieldset": {
+              border: "1px solid #1976D2",
+              "&:hover":{
+                border: "1px solid #1976D2",
+              }
+            }
+          }
+        }}
+                   inputProps={{className: 'tw-text-text-light'}}
+                   margin='normal'
+                   required
+                   fullWidth
+                   autoFocus
+                   id='name'
+                   name='name'
+                   type='text'
+                   value={formik.values.name}
+                   onChange={formik.handleChange}
+                   onBlur={formik.handleBlur}
+                   error={formik.touched.name && Boolean(formik.errors.name)}
+                   helperText={formik.touched.name && formik.errors.name}
         />
         {error && <Alert severity='error'>{error.message}</Alert>}
+
         <Button
+          className='text-text-light'
           type='submit'
           fullWidth
           variant='contained'
