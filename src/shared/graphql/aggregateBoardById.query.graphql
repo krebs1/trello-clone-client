@@ -1,5 +1,5 @@
-query FindBoardById ($id: String!) {
-    findBoardById(_id: $id) {
+query AggregateBoardById($bid: String!) {
+    aggregateBoardById(_id: $bid) {
         _id
         background
         name
@@ -9,8 +9,8 @@ query FindBoardById ($id: String!) {
             text
             colorInfo {
                 _id
-                name
                 color
+                name
             }
         }
         lists {
@@ -20,9 +20,9 @@ query FindBoardById ($id: String!) {
                 _id
                 description
                 dueDate
+                labels
                 name
                 startDate
-                labels
             }
         }
         members {

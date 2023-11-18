@@ -12,7 +12,7 @@ export const authCfg: AuthOptions = {
     })
   ],
   pages: {
-    signIn: '/login'
+    signIn: '/(.)login'
   },
   callbacks: {
     session: async ({session, token, user}) => {

@@ -4,11 +4,11 @@ import {Box, CircularProgress, Container, CssBaseline} from '@mui/material';
 import React, {FC, useEffect} from 'react';
 import {List} from './modules/List'
 import {Lists} from '@/src/pages/BoardPage/modules/Lists'
-import {FindBoardByIdQuery} from "@/src/shared/graphql/generated/schema";
+import {AggregateBoardByIdQuery, FindBoardByIdQuery} from "@/src/shared/graphql/generated/schema";
 
 interface Props {
   subscribeToBoardModified: (() => () => void) | null,
-  data: NonNullable<FindBoardByIdQuery['findBoardById']>
+  data: NonNullable<AggregateBoardByIdQuery['aggregateBoardById']>
 }
 
 const BoardPage: FC<Props> = ({subscribeToBoardModified, data}) => {

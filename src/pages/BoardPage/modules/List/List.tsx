@@ -118,7 +118,6 @@ const List: FC<Props> = ({list, boardId}) => {
                                    onChange={formik.handleChange}
                                    onBlur={() => {
                                      formik.handleBlur;
-                                     setIsCreating(false)
                                    }}
                                    error={formik.touched.cardName && Boolean(formik.errors.cardName)}
                                    helperText={formik.touched.cardName && formik.errors.cardName}

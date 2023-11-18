@@ -1,0 +1,9 @@
+mutation DeleteLabelFromCard ($boardId: String!, $listId: String!, $cardId: String!, $labelId: String!) {
+    deleteLabelFromCard(
+        deleteLabelFromCardInput: { boardId: $boardId, cardId: $cardId, labelId: $labelId, listId: $listId }
+    ) {
+        _id
+        background
+        name
+    }
+}

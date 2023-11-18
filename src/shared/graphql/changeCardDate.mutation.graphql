@@ -1,5 +1,5 @@
-query FindBoardById ($id: String!) {
-    findBoardById(_id: $id) {
+mutation ChangeCardDate ($boardId: String!, $listId: String!, $cardId: String!, $startDate: DateTime, $dueDate: DateTime) {
+    changeCardDate(changeCardDateInput: { boardId: $boardId,cardId: $cardId,dueDate: $dueDate,listId: $listId,startDate: $startDate }) {
         _id
         background
         name
@@ -7,11 +7,6 @@ query FindBoardById ($id: String!) {
             _id
             colorId
             text
-            colorInfo {
-                _id
-                name
-                color
-            }
         }
         lists {
             _id
@@ -20,21 +15,14 @@ query FindBoardById ($id: String!) {
                 _id
                 description
                 dueDate
+                labels
                 name
                 startDate
-                labels
             }
         }
         members {
             _id
             userId
-            userInfo {
-                _id
-                email
-                emailVerified
-                image
-                name
-            }
         }
     }
 }

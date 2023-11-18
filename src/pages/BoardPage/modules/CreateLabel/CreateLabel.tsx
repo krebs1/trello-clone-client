@@ -19,15 +19,17 @@ const CreateLabel:FC<Props> = ({boardId, cardId, closeCreating}) => {
   const [createLabel] = useCreateLabelMutation()
 
   return (
-    <Box>
-      <Box className='tw-p-8 tw-bg-card-bg tw-mb-3'>
+    <Box className='tw-max-w-xs tw-min-w-full'>
+      <Box className='tw-p-8 tw-bg-card-bg tw-mb-3 tw-min-w-full tw-max-w-full'>
         <Tooltip
           title={`Цвет: ${selectedColor ? selectedColor.name : 'нет'}, название: ${labelName ? labelName : 'нет'}`}
           placement='bottom'>
           <Box style={{backgroundColor: selectedColor ? selectedColor.color : 'transparent'}}
-               className='tw-text-sm tw-text-text-light tw-h-8 tw-min-w-full tw-px-3 tw-rounded tw-flex tw-items-center'
+               className='tw-text-sm tw-text-text-light tw-h-8 tw-min-w-full tw-max-w-full tw-px-3 tw-rounded tw-flex tw-items-center'
           >
-            <Box component='span'>
+            <Box component='span'
+                 className='tw-truncate tw-inline-block tw-min-w-full tw-max-w-full'
+            >
               {
                 labelName
               }

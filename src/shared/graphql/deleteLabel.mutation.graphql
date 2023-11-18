@@ -1,5 +1,7 @@
-query FindBoardById ($id: String!) {
-    findBoardById(_id: $id) {
+mutation DeleteLabel($bid: String!, $labelId: String!) {
+    deleteLabel(
+        deleteLabelInput: { boardId: $bid, labelId: $labelId }
+    ) {
         _id
         background
         name
@@ -7,11 +9,6 @@ query FindBoardById ($id: String!) {
             _id
             colorId
             text
-            colorInfo {
-                _id
-                name
-                color
-            }
         }
         lists {
             _id
@@ -26,15 +23,7 @@ query FindBoardById ($id: String!) {
             }
         }
         members {
-            _id
             userId
-            userInfo {
-                _id
-                email
-                emailVerified
-                image
-                name
-            }
         }
     }
 }

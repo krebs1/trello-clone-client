@@ -3,7 +3,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {CModal} from "@/src/components/Modal";
 import {useRouter} from "next/navigation";
-import {Box, Button, TextField, Typography} from "@mui/material";
+import {Box, Button, CircularProgress, TextField, Typography} from "@mui/material";
 import {useReactiveVar} from "@apollo/client";
 import {currentBoardVar} from "@/src/shared/lib/apollo-wrapper";
 import {Card, useChangeCardDescriptionMutation, useRenameCardMutation} from "@/src/shared/graphql/generated/schema";
@@ -18,6 +18,8 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import {LeftContentButton} from '@/src/ui/LeftContentButton';
 import {CPopover} from "@/src/components/Popover";
 import SelectLabels from "@/src/pages/BoardPage/modules/SelectLabels/SelectLabels";
+import {DateRange} from "@mui/icons-material";
+import {AddDate} from "@/src/pages/BoardPage/modules/AddDate";
 
 interface Props {
   boardId: string,
@@ -74,148 +76,166 @@ const EditCardModal: FC<Props> = ({cardId, boardId}) => {
   const open = Boolean(anchorEl);
 
   return (
-    <CModal className='tw-max-w-3xl tw-w-full' header="Изменение карточки" open={true} onClose={() => {
+    <CModal className='tw-max-w-3xl tw-w-full tw-h-4/5' header="Изменение карточки" open={true} onClose={() => {
       router.back()
     }}>
-      <Box className='tw-grid tw-grid-cols-12 gap-4 tw-w-full'>
-        <Box className='tw-col-span-9 tw-pr-6'>
-          <Box className='tw-w-full'>
-            <Box className='tw-flex tw-items-center tw-content-center tw-w-full tw-mb-3'>
-              <TitleIcon className='tw-mr-2 tw-text-text-subtitle'/>
-              <Box className='tw-w-full tw-flex tw-items-start tw-content-center'>
-                <Typography variant='h5' className='tw-p-1.5 tw-pl-3 tw-text-text-light tw-text-sm tw-hidden'>
-                  {cardName}
-                </Typography>
-                <TextField sx={{
-                  "& .MuiOutlinedInput-root.Mui-focused": {
-                    "& > fieldset": {
-                      border: "1px solid #1976D2"
-                    }
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& > input": {
-                      fontSize: "14px",
-                      padding: "0.375rem",
-                      paddingLeft: "0.750rem"
-                    },
-                    "& > fieldset": {
-                      border: "none",
-                    }
-                  }
-                }}
-                           inputProps={{className: 'tw-text-text-light'}}
-                           fullWidth
-                           placeholder='Название карточки'
-                           variant="outlined"
-                           type='text'
-                           value={cardName}
-                           onChange={(e) => {
-                             setCardName(e.target.value)
-                           }}
-                           onBlur={async () => {
-                             if (boardId && listId && cardId)
-                               await renameCard({
-                                 variables: {
-                                   boardId: boardId,
-                                   listId: listId,
-                                   cardId: cardId,
-                                   name: cardName
-                                 }
-                               })
-                           }}
-                />
+      {
+        (boardId && listId && cardId && card) &&
+          <Box className='tw-grid tw-grid-cols-12 gap-4 tw-w-full'>
+              <Box className='tw-col-span-9 tw-pr-6'>
+                  <Box className='tw-w-full'>
+                      <Box className='tw-flex tw-items-center tw-content-center tw-w-full tw-mb-3'>
+                          <TitleIcon className='tw-mr-2 tw-text-text-subtitle'/>
+                          <Box className='tw-w-full tw-flex tw-items-start tw-content-center'>
+                              <Typography variant='h5'
+                                          className='tw-p-1.5 tw-pl-3 tw-text-text-light tw-text-sm tw-hidden'>
+                                {cardName}
+                              </Typography>
+                              <TextField sx={{
+                                "& .MuiOutlinedInput-root.Mui-focused": {
+                                  "& > fieldset": {
+                                    border: "1px solid #1976D2"
+                                  }
+                                },
+                                "& .MuiOutlinedInput-root": {
+                                  "& > input": {
+                                    fontSize: "14px",
+                                    padding: "0.375rem",
+                                    paddingLeft: "0.750rem"
+                                  },
+                                  "& > fieldset": {
+                                    border: "none",
+                                  }
+                                }
+                              }}
+                                         inputProps={{className: 'tw-text-text-light'}}
+                                         fullWidth
+                                         placeholder='Название карточки'
+                                         variant="outlined"
+                                         type='text'
+                                         value={cardName}
+                                         onChange={(e) => {
+                                           setCardName(e.target.value)
+                                         }}
+                                         onBlur={async () => {
+                                           if (boardId && listId && cardId)
+                                             await renameCard({
+                                               variables: {
+                                                 boardId: boardId,
+                                                 listId: listId,
+                                                 cardId: cardId,
+                                                 name: cardName
+                                               }
+                                             })
+                                         }}
+                              />
+                          </Box>
+                      </Box>
+                      <Box className='tw-flex tw-items-start tw-content-center tw-w-full'>
+                          <DescriptionIcon className='tw-mr-2 tw-text-text-subtitle tw-mt-1.5'/>
+                          <Box className='tw-w-full'>
+                              <Typography variant='h5' className='tw-p-1.5 tw-pl-3 tw-text-text-light tw-text-base'>
+                                  Описание
+                              </Typography>
+                              <TextField sx={{
+                                "& .MuiOutlinedInput-root.Mui-focused": {
+                                  "& > fieldset": {
+                                    border: "1px solid #1976D2"
+                                  }
+                                },
+                                "& .MuiOutlinedInput-root": {
+                                  "& > input": {
+                                    fontSize: "14px",
+                                    padding: "0.375rem",
+                                    paddingLeft: "0.750rem"
+                                  },
+                                  "& > fieldset": {
+                                    border: "none",
+                                  }
+                                }
+                              }}
+                                         inputProps={{className: 'tw-text-text-light'}}
+                                         fullWidth
+                                         placeholder='Описание карточки'
+                                         multiline
+                                         minRows={4}
+                                         variant="outlined"
+                                         type='text'
+                                         value={cardDescription}
+                                         onChange={(e) => {
+                                           setCardDescription(e.target.value)
+                                         }}
+                                         onBlur={async () => {
+                                           if (boardId && listId && cardId)
+                                             await changeDescription({
+                                               variables: {
+                                                 boardId: boardId,
+                                                 listId: listId,
+                                                 cardId: cardId,
+                                                 description: cardDescription,
+                                               }
+                                             })
+                                         }}
+                              />
+                          </Box>
+                      </Box>
+                  </Box>
               </Box>
-            </Box>
-            <Box className='tw-flex tw-items-start tw-content-center tw-w-full'>
-              <DescriptionIcon className='tw-mr-2 tw-text-text-subtitle tw-mt-1.5'/>
-              <Box className='tw-w-full'>
-                <Typography variant='h5' className='tw-p-1.5 tw-pl-3 tw-text-text-light tw-text-base'>
-                  Описание
-                </Typography>
-                <TextField sx={{
-                  "& .MuiOutlinedInput-root.Mui-focused": {
-                    "& > fieldset": {
-                      border: "1px solid #1976D2"
-                    }
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& > input": {
-                      fontSize: "14px",
-                      padding: "0.375rem",
-                      paddingLeft: "0.750rem"
-                    },
-                    "& > fieldset": {
-                      border: "none",
-                    }
-                  }
-                }}
-                           inputProps={{className: 'tw-text-text-light'}}
-                           fullWidth
-                           placeholder='Описание карточки'
-                           multiline
-                           minRows={4}
-                           variant="outlined"
-                           type='text'
-                           value={cardDescription}
-                           onChange={(e) => {
-                             setCardDescription(e.target.value)
-                           }}
-                           onBlur={async () => {
-                             if (boardId && listId && cardId)
-                               await changeDescription({
-                                 variables: {
-                                   boardId: boardId,
-                                   listId: listId,
-                                   cardId: cardId,
-                                   description: cardDescription,
-                                 }
-                               })
-                           }}
-                />
+              <Box className='tw-col-span-3'>
+                  <Box className='tw-flex tw-flex-col tw-mb-4'>
+                      <Typography className='tw-text-text-light tw-mb-2'>
+                          Добавить на карточку
+                      </Typography>
+                      <LeftContentButton className='tw-mb-2'
+                                         variant='contained'
+                                         startIcon={<LabelIcon/>}
+                                         onClick={(e) => handlePopoverOpen(e)}
+                      >
+                          Метки
+                      </LeftContentButton>
+                      <SelectLabels popOverProps={{open: open, anchorEl: anchorEl}}
+                                    handleClose={handlePopoverClose}
+                                    boardId={boardId}
+                                    listId={listId}
+                                    cardId={cardId}
+                                    cardLabels={card.labels}
+                                    labels={board?.labels}
+                      />
+                      <AddDate boardId={boardId}
+                               listId={listId}
+                               cardId={cardId}
+                               startDate={card?.startDate}
+                               dueDate={card?.dueDate}
+                      />
+                      <LeftContentButton className='tw-mb-2' variant='contained' startIcon={<PersonIcon/>}>
+                          Пользователи
+                      </LeftContentButton>
+                      <LeftContentButton className='tw-mb-2' variant='contained' startIcon={<AttachFileIcon/>}>
+                          Вложения
+                      </LeftContentButton>
+                  </Box>
+                  <Box className='tw-flex tw-flex-col'>
+                      <Typography className='tw-text-text-light tw-mb-2'>
+                          Действия
+                      </Typography>
+                      <LeftContentButton className='tw-mb-2' variant='contained' startIcon={<ArchiveIcon/>}>
+                          Архивировать
+                      </LeftContentButton>
+                      <LeftContentButton variant='contained' startIcon={<ShareIcon/>}>
+                          Поделиться
+                      </LeftContentButton>
+                  </Box>
               </Box>
-            </Box>
           </Box>
-        </Box>
-        <Box className='tw-col-span-3'>
-          <Box className='tw-flex tw-flex-col tw-mb-4'>
-            <Typography className='tw-text-text-light tw-mb-2'>
-              Добавить на карточку
-            </Typography>
-            <LeftContentButton className='tw-mb-2'
-                               variant='contained'
-                               startIcon={<LabelIcon/>}
-                               onClick={(e) => handlePopoverOpen(e)}
-            >
-              Метки
-            </LeftContentButton>
-            <SelectLabels popOverProps={{open: open, anchorEl: anchorEl}}
-                          handleClose={handlePopoverClose}
-                          boardId={boardId}
-                          cardId={cardId}
-            />
-            <LeftContentButton className='tw-mb-2' variant='contained' startIcon={<AccessTimeIcon/>}>
-              Даты
-            </LeftContentButton>
-            <LeftContentButton className='tw-mb-2' variant='contained' startIcon={<PersonIcon/>}>
-              Пользователи
-            </LeftContentButton>
-            <LeftContentButton className='tw-mb-2' variant='contained' startIcon={<AttachFileIcon/>}>
-              Вложения
-            </LeftContentButton>
+      }
+      {
+        !(boardId && listId && cardId && card) &&
+          <Box className='tw-w-full tw-h-full'>
+              <Box className='tw-flex tw-items-center tw-justify-items-center'>
+                  <CircularProgress/>
+              </Box>
           </Box>
-          <Box className='tw-flex tw-flex-col'>
-            <Typography className='tw-text-text-light tw-mb-2'>
-              Действия
-            </Typography>
-            <LeftContentButton className='tw-mb-2' variant='contained' startIcon={<ArchiveIcon/>}>
-              Архивировать
-            </LeftContentButton>
-            <LeftContentButton variant='contained' startIcon={<ShareIcon/>}>
-              Поделиться
-            </LeftContentButton>
-          </Box>
-        </Box>
-      </Box>
+      }
     </CModal>
   );
 };

@@ -5,24 +5,16 @@ import {BoardPage} from "@/src/pages/BoardPage";
 import {
   BoardModifiedDocument,
   BoardModifiedSubscription,
-  BoardModifiedSubscriptionVariables,
+  BoardModifiedSubscriptionVariables, useAggregateBoardByIdQuery,
   useFindBoardByIdQuery
 } from '@/src/shared/graphql/generated/schema'
 import {currentBoardVar} from "@/src/shared/lib/apollo-wrapper";
 
 const Page = ({params}: { params: { slug: string } }) => {
-  const {
-    subscribeToMore,
-    data: {findBoardById} = {},
-  } = useFindBoardByIdQuery({
-    variables: {
-      id: params.slug
-    }
-  })
-
+  const {subscribeToMore, data: {aggregateBoardById} = {}} = useAggregateBoardByIdQuery({variables: {bid: params.slug}})
   useEffect(() => {
-    findBoardById ? currentBoardVar(findBoardById!) : currentBoardVar(null)
-  }, [findBoardById]);
+    aggregateBoardById ? currentBoardVar(aggregateBoardById!) : currentBoardVar(null)
+  }, [aggregateBoardById]);
 
   const subscribeToBoardModified = useCallback(
     () => subscribeToMore<BoardModifiedSubscription, BoardModifiedSubscriptionVariables>({
@@ -44,7 +36,7 @@ const Page = ({params}: { params: { slug: string } }) => {
 
   return (
     // @ts-ignore
-    <BoardPage subscribeToBoardModified={params.slug ? subscribeToMore : null} data={findBoardById}/>
+    <BoardPage subscribeToBoardModified={params.slug ? subscribeToMore : null} data={aggregateBoardById}/>
   );
 };
 

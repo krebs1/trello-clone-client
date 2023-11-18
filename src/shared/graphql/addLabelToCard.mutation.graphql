@@ -1,0 +1,9 @@
+mutation AddLabelToCard ($boardId: String!, $listId: String!, $cardId: String!, $labelId: String!) {
+    addLabelToCard(
+        addLabelToCardInput: { boardId: $boardId, cardId: $cardId, labelId: $labelId, listId: $listId }
+    ) {
+        _id
+        background
+        name
+    }
+}

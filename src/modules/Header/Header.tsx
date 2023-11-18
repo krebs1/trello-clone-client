@@ -17,10 +17,12 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import {useSession, signOut} from 'next-auth/react'
-
-const pages = ['Products', 'Pricing', 'Blog']
+import NextLink from "next/link";
+import {useRouter} from "next/navigation";
 
 const Header = () => {
+  const router = useRouter();
+
   const {update, data, status} = useSession()
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
@@ -44,14 +46,14 @@ const Header = () => {
   }
 
   return (
-    <AppBar position='static'>
+    <AppBar position='relative'>
       <Container maxWidth='xl'>
-        <Toolbar disableGutters>
+        <Toolbar>
           <Typography
             variant='h6'
             noWrap
-            component='a'
-            href='#app-bar-with-responsive-menu-1'
+            component={NextLink}
+            href='/'
             sx={{
               mr: 2,
               display: {xs: 'none', md: 'flex'},
@@ -94,11 +96,18 @@ const Header = () => {
                 display: {xs: 'block', md: 'none'}
               }}
             >
-              {pages.map(page => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page}</Typography>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign='center'
+                              component={NextLink}
+                              href='/boards'
+                              sx={{
+                                color: 'inherit',
+                                textDecoration: 'none'
+                              }}
+                  >
+                    Доски
+                  </Typography>
                 </MenuItem>
-              ))}
             </Menu>
           </Box>
           <Typography
@@ -120,19 +129,18 @@ const Header = () => {
             LOGO
           </Typography>
           <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{my: 2, color: 'white', display: 'block'}}
+            <Typography textAlign='center'
+                        component={NextLink}
+                        href='/boards'
+                        sx={{
+                          my: 2,
+                          display: 'block',
+                          color: 'inherit',
+                          textDecoration: 'none'
+                        }}
             >
               Доски
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              variant='outlined'
-              sx={{my: 2, color: 'white', display: 'block'}}
-            >
-              Создать
-            </Button>
+            </Typography>
           </Box>
 
           <Box sx={{flexGrow: 0}}>
@@ -187,15 +195,24 @@ const Header = () => {
             )}
             {status === 'unauthenticated' && (
               <Box>
-                <Link
-                  href='/login'
-                  underline='hover'
-                  color='inherit'
-                  className='tw-mr-5'
+                <Typography textAlign='center'
+                            component={NextLink}
+                            href='/login'
+                            sx={{
+                              mr: '20px',
+                              color: 'inherit',
+                              textDecoration: 'none',
+                              '&:hover': {
+                                textDecoration: 'underline'
+                              }
+                            }}
                 >
+                  Войти2
+                </Typography>
+                <Link component={NextLink} className='tw-mr-5' href='/login' underline='hover' color='inherit'>
                   Войти
                 </Link>
-                <Link href='#' underline='hover' color='inherit'>
+                <Link component={NextLink}  href='/signup' underline='hover' color='inherit'>
                   Зарегистрироваться
                 </Link>
               </Box>

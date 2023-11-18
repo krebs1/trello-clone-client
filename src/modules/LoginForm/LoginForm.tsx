@@ -79,7 +79,7 @@ const LoginForm = () => {
         </Button>
       </Box>
       <Box>
-        <Divider className='tw-mb-3'>Or</Divider>
+        <Divider className='tw-mb-3'>Или</Divider>
         <Button
           variant='contained'
           startIcon={<GoogleIcon/>}
@@ -90,7 +90,7 @@ const LoginForm = () => {
             })
           }
         >
-          By Google
+          Через Google
         </Button>
       </Box>
     </Box>

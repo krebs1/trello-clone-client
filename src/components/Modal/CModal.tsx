@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Box, Divider, IconButton, Modal, Typography} from "@mui/material";
+import {Box, Divider, IconButton, Modal, Paper, Typography} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
@@ -17,23 +17,28 @@ interface Props {
   className?: string
 }
 
-const CModal: FC<Props> = ({open = false, onClose, header = '', children, className=''}) => {
+const CModal: FC<Props> = ({open = false, onClose, header = '', children, className = ''}) => {
   return (
     <Modal open={open}
            onClose={onClose}
     >
-      <Box component='section' sx={style} className={'tw-rounded-lg tw-p-4 tw-bg-card-bg' +` ${className}`}>
+      <Paper component='section'
+             sx={style}
+             className={'tw-p-4'}
+             variant='elevation'
+             elevation={3}
+      >
         <header className='tw-flex tw-flex-row tw-items-center tw-justify-between tw-mb-1'>
-          {
-            header &&
-              <Typography variant='h6' className='tw-mr-1 tw-text-text-light'>{header}</Typography>
-          }
-          <IconButton className='tw-text-text-light' onClick={onClose}><CloseIcon/></IconButton>
+          <Typography variant='h6' className='tw-mr-1 tw-text-text-light tw-grow'>{header}</Typography>
+          <IconButton className='' onClick={onClose}><CloseIcon/></IconButton>
         </header>
         <main>
           {children}
         </main>
-      </Box>
+      </Paper>
+      {/*<Box component='section' sx={style} className={'tw-rounded-lg tw-p-4' +` ${className}`}>*/}
+      {/*  */}
+      {/*</Box>*/}
     </Modal>
   );
 };

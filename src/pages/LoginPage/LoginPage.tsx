@@ -36,7 +36,7 @@ const LoginPage = () => {
           </Grid>
           <Grid item>
             <Link href='#' variant='body2'>
-              {'Нет аккаунта? Зарегистрируйте'}
+              {'Нет аккаунта? Создайте!'}
             </Link>
           </Grid>
         </Grid>

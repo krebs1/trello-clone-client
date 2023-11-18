@@ -19,10 +19,22 @@ subscription BoardModified($id: String!) {
             _id
             colorId
             text
+            colorInfo {
+                _id
+                name
+                color
+            }
         }
         members {
             _id
             userId
+            userInfo {
+                _id
+                email
+                emailVerified
+                image
+                name
+            }
         }
     }
 }
