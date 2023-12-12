@@ -1,0 +1,11 @@
+mutation ChangeDefaultRole ($boardId: String!, $roleId: String!) {
+    changeDefaultRole(
+        changeDefaultRoleInput: { boardId: $boardId, roleId: $roleId }
+    ) {
+        _id
+        background
+        defaultRole
+        inviteLink
+        name
+    }
+}

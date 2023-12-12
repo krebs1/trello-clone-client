@@ -1,0 +1,7 @@
+query FindAllBackgrounds {
+    findAllBackgrounds {
+        _id
+        imagePath
+        previewPath
+    }
+}

@@ -18,12 +18,12 @@ export const metadata: Metadata = {
 export default function RootLayout(props: { auth: React.ReactNode, children: React.ReactNode }) {
   return (
     <InjectTailwind>
-      <html lang='ru'>
-      <body className={inter.className}>
+      <html lang='ru' className='tw-h-full'>
+      <body className={`${inter.className} tw-h-full tw-flex tw-flex-col`}>
       <ApolloWrapper>
         <AuthProvider>
           <Header/>
-          <main>
+          <main className='tw-grow'>
             {
               props.children
             }

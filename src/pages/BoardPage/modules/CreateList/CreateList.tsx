@@ -1,6 +1,6 @@
 'use client'
 
-import {Box, Button, IconButton, TextField} from '@mui/material';
+import {Box, Button, IconButton, Paper, TextField} from '@mui/material';
 import React, {FC, useState} from 'react';
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from '@mui/icons-material/Close';
@@ -38,48 +38,65 @@ const CreateList: FC<Props> = ({boardId}) => {
 
   return (
     <Box className='tw-min-h-full tw-min-w-[272px] tw-px-1.5'>
-      <Box className='tw-w-full tw-bg-list-bg tw-rounded-xl tw-pb-2'>
+      <Paper
+        className='tw-w-full tw-rounded-xl tw-pb-2'
+        variant='elevation'
+        elevation={5}
+      >
         <Box className='tw-p-2 tw-pb-0'>
           {
             !isCreating &&
-              <Button onClick={() => setIsCreating(true)} size='small'
-                      className='tw-rounded-xl tw-p-2 tw-text-text-subtitle tw-w-full' startIcon={<AddIcon/>}>
+              <Button
+                  onClick={() => setIsCreating(true)} size='small'
+                  className='tw-rounded-xl tw-p-2 tw-w-full' startIcon={<AddIcon/>}
+              >
                   Добавить список
               </Button>
           }
           {
             isCreating &&
-              <Box className='tw-w-full' component='form' onSubmit={(e) => {
-                e.preventDefault();
-                formik.handleSubmit();
-              }}>
-                  <TextField sx={{"& fieldset": {border: 'none'}}}
-                             inputProps={{className: 'tw-text-text-light'}}
-                             fullWidth className='tw-mb-2'
-                             placeholder='Название списка'
-                             variant="outlined"
-                             autoFocus
-                             id='boardName'
-                             name='boardName'
-                             type='text'
-                             value={formik.values.boardName}
-                             onChange={formik.handleChange}
-                             onBlur={formik.handleBlur}
-                             error={formik.touched.boardName && Boolean(formik.errors.boardName)}
-                             helperText={formik.touched.boardName && formik.errors.boardName}
+              <Box
+                  className='tw-w-full'
+                  component='form'
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    formik.handleSubmit();
+                  }}
+              >
+                  <TextField
+                      sx={{"& fieldset": {border: 'none'}}}
+                      fullWidth className='tw-mb-2'
+                      placeholder='Название списка'
+                      variant="outlined"
+                      autoFocus
+                      id='boardName'
+                      name='boardName'
+                      type='text'
+                      value={formik.values.boardName}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.boardName && Boolean(formik.errors.boardName)}
+                      helperText={formik.touched.boardName && formik.errors.boardName}
                   />
                   <Box className='tw-flex tw-w-full'>
-                      <Button type='submit' className='tw-text-text-light tw-mr-3' variant='contained'>
+                      <Button
+                          type='submit'
+                          className='tw-mr-3'
+                          variant='contained'
+                      >
                           Создать
                       </Button>
-                      <IconButton className='tw-text-text-light' onClick={() => setIsCreating(false)}>
+                      <IconButton
+                          className=''
+                          onClick={() => setIsCreating(false)}
+                      >
                           <CloseIcon/>
                       </IconButton>
                   </Box>
               </Box>
           }
         </Box>
-      </Box>
+      </Paper>
     </Box>
   );
 };

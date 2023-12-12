@@ -195,20 +195,6 @@ const Header = () => {
             )}
             {status === 'unauthenticated' && (
               <Box>
-                <Typography textAlign='center'
-                            component={NextLink}
-                            href='/login'
-                            sx={{
-                              mr: '20px',
-                              color: 'inherit',
-                              textDecoration: 'none',
-                              '&:hover': {
-                                textDecoration: 'underline'
-                              }
-                            }}
-                >
-                  Войти2
-                </Typography>
                 <Link component={NextLink} className='tw-mr-5' href='/login' underline='hover' color='inherit'>
                   Войти
                 </Link>

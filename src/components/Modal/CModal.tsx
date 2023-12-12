@@ -24,12 +24,12 @@ const CModal: FC<Props> = ({open = false, onClose, header = '', children, classN
     >
       <Paper component='section'
              sx={style}
-             className={'tw-p-4'}
+             className={`tw-p-4 ${className}`}
              variant='elevation'
              elevation={3}
       >
         <header className='tw-flex tw-flex-row tw-items-center tw-justify-between tw-mb-1'>
-          <Typography variant='h6' className='tw-mr-1 tw-text-text-light tw-grow'>{header}</Typography>
+          <Typography variant='h6' className='tw-mr-1 tw-grow'>{header}</Typography>
           <IconButton className='' onClick={onClose}><CloseIcon/></IconButton>
         </header>
         <main>

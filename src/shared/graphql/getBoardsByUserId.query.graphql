@@ -24,5 +24,6 @@ query FindBoardByUserId($uid: String!) {
             _id
             userId
         }
+        inviteLink
     }
 }

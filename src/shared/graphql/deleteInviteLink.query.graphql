@@ -1,0 +1,9 @@
+mutation DeleteInviteLink ($boardId: String!) {
+    deleteInviteLink(_id: $boardId) {
+        _id
+        background
+        defaultRole
+        inviteLink
+        name
+    }
+}

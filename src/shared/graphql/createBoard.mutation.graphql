@@ -1,5 +1,5 @@
-mutation CreateBoard($createBoardInput: CreateBoardInput!) {
-    createBoard(createBoardInput: $createBoardInput) {
+mutation CreateBoard($boardName: String!, $userId: String!, $backgroundId: String!) {
+    createBoard(createBoardInput: {name: $boardName, userId: $userId, backgroundId: $backgroundId}) {
         _id
         background
         name

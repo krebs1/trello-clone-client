@@ -25,7 +25,7 @@ const Lists: FC<Props> = ({lists, boardId}) => {
 
     if (result.destination.droppableId === result.source.droppableId) {
       if (result.destination.index === result.source.index) return;
-      
+
       const listId = result.destination.droppableId.split(':')[1];
       await changeOrder({
         variables: {
@@ -43,7 +43,7 @@ const Lists: FC<Props> = ({lists, boardId}) => {
       const destinationIndex = result.destination.index;
 
       await moveCard({
-        variables:{
+        variables: {
           boardId: boardId,
           sourceListId: sourceListId,
           sourceCardId: sourceCardId,
@@ -56,11 +56,11 @@ const Lists: FC<Props> = ({lists, boardId}) => {
   }, [boardId, changeOrder, moveCard])
 
   return (
-    <>
-      <CssBaseline/>
+    <Box className='tw-grow tw-relative'>
       <Box
-        className='tw-min-h-full tw-min-w-full tw-flex tw-flex-row tw-overflow-x-scroll tw-p-0 tw-m-0 tw-list-none tw-absolute tw-top-0 tw-right-0 tw-left-0 tw-bottom-0 tw-mt-3'
-        component='ol'>
+        className='tw-absolute tw-top-0 tw-bottom-0 tw-right-0 tw-left-0 tw-min-h-full tw-min-w-full tw-flex tw-flex-row tw-overflow-x-auto tw-p-0 tw-m-0 tw-list-none scrollbar'
+        component='ol'
+      >
         <DragDropContext onDragEnd={onDragEnd}>
           {
             lists &&
@@ -69,7 +69,7 @@ const Lists: FC<Props> = ({lists, boardId}) => {
         </DragDropContext>
         <CreateList boardId={boardId}/>
       </Box>
-    </>
+    </Box>
   );
 };
 

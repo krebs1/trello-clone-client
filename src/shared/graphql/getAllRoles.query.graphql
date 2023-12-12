@@ -1,0 +1,8 @@
+query FindAllRoles {
+    findAllRoles {
+        _id
+        canBeName
+        description
+        name
+    }
+}

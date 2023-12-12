@@ -1,0 +1,12 @@
+query AggregateBoardByUserId ($userId: String!) {
+    aggregateBoardByUserId(_id: $userId) {
+        _id
+        background
+        name
+        backgroundInfo {
+            _id
+            imagePath
+            previewPath
+        }
+    }
+}

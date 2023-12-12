@@ -1,12 +1,17 @@
-import React, {FC} from 'react';
-import {Alert, Box, Button, TextField} from "@mui/material";
+import React, {FC, useEffect, useState} from 'react';
+import {Alert, Box, Button, CircularProgress, ImageList, ImageListItem, TextField, Typography} from "@mui/material";
 import {CModal} from "@/src/components/Modal";
 import {useFormik} from "formik";
 import {useSession} from "next-auth/react";
 import {createSchema} from "@/src/pages/BoardsPage/modules/CreateModal/yup/createSchema";
-import {useMutation} from "@apollo/client";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import {LeftContentButton} from "@/src/ui/LeftContentButton";
+import CheckIcon from '@mui/icons-material/Check';
+import {
+  FindAllBackgroundsQuery,
+  useCreateBoardMutation,
+  useFindAllBackgroundsQuery
+} from "@/src/shared/graphql/generated/schema";
+import {Background} from '@/src/shared/graphql/generated/schema'
+
 
 interface Props {
   open: boolean,
@@ -23,25 +28,43 @@ const CreateModal: FC<Props> = ({open = false, onClose, onCreate}) => {
     },
     validationSchema: createSchema,
     onSubmit: async values => {
-      await createBoard();
+      await createBoard({
+        variables: {
+          boardName: values.name,
+          userId: session?.user.id!,
+          backgroundId: selectedBackground?._id!
+        }
+      });
       onCreate();
       onClose();
     }
   })
 
-  const [createBoard, {data, loading, error}] = useMutation(createBoardMutation, {
-    variables: {
-      createBoardInput: {
-        name: formik.values.name,
-        // @ts-ignore
-        userId: session?.user.id
-      }
+  const [createBoard, {error}] = useCreateBoardMutation();
+  const {data:{findAllBackgrounds} = {}, loading} = useFindAllBackgroundsQuery();
+  const [selectedBackground, setSelectedBackground] = useState<Background|null>(null);
+  useEffect(() => {
+    if(!loading && !selectedBackground) {
+      setSelectedBackground(findAllBackgrounds![0]);
     }
-  })
-
+  }, [loading]);
 
   return (
-    <CModal header='Создать доску' open={open} onClose={onClose}>
+    <CModal header='Создать доску' open={open} onClose={onClose} className='tw-max-w-xs'>
+      <Box className='tw-mb-4 tw-flex tw-items-center tw-justify-center'>
+        <Box
+          sx={{
+            //TODO: `add env`
+            backgroundImage: `url(http://localhost:7000/${selectedBackground?.previewPath})`,
+          }}
+          className='tw-w-52 tw-p-4 tw-bg-cover tw-flex tw-items-center tw-justify-center tw-rounded'
+        >
+          {
+            //TODO: `add env`
+          }
+          <img src={`http://localhost:3000/14cda5dc635d1f13bc48.svg`}/>
+        </Box>
+      </Box>
       <Box
         component='form'
         onSubmit={e => {
@@ -49,34 +72,53 @@ const CreateModal: FC<Props> = ({open = false, onClose, onCreate}) => {
           formik.handleSubmit()
         }}
       >
-        <TextField sx={{
-          "& .MuiOutlinedInput-root.Mui-focused": {
-            "& > fieldset": {
-              border: "1px solid #1976D2"
-            }
-          },
-          "& .MuiOutlinedInput-root": {
-            "& > input": {
-              fontSize: "14px",
-              padding: "0.375rem",
-              paddingLeft: "0.750rem"
-            },
-            "& > fieldset": {
-              border: "1px solid #1976D2",
-              "&:hover":{
-                border: "1px solid #1976D2",
-              }
-            }
+        <Box className='tw-mb-2'>
+          <Typography className='tw-text-xs tw-mb-1'>
+            Цвета
+          </Typography>
+          {
+            loading &&
+              <Box className='tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center'>
+                  <CircularProgress/>
+              </Box>
           }
-        }}
-                   inputProps={{className: 'tw-text-text-light'}}
-                   margin='normal'
+          {
+            findAllBackgrounds &&
+              <Box className='tw-grid tw-grid-cols-4 tw-gap-2 tw-w-full'>
+                {
+                  findAllBackgrounds.map(elem => (
+                    <Box key={elem._id}
+                         sx={{
+                           //TODO: `add env`
+                           backgroundImage: `url(http://localhost:7000/${elem.previewPath})`,
+                           filter: selectedBackground?._id === elem._id ? 'grayscale(50%);' : 'none',
+                           '&:hover': {
+                             filter: 'grayscale(50%);'
+                           }
+                         }}
+                         className='tw-rounded tw-cursor-pointer tw-h-14 tw-bg-cover tw-flex tw-items-center tw-justify-center'
+                         onClick={()=>{
+                           setSelectedBackground(elem)
+                         }}
+                    >
+                      {
+                        selectedBackground?._id === elem._id &&
+                          <CheckIcon/>
+                      }
+                    </Box>
+                  ))
+                }
+              </Box>
+          }
+        </Box>
+        <TextField margin='normal'
                    required
                    fullWidth
                    autoFocus
                    id='name'
                    name='name'
                    type='text'
+                   label='Название'
                    value={formik.values.name}
                    onChange={formik.handleChange}
                    onBlur={formik.handleBlur}
@@ -86,12 +128,11 @@ const CreateModal: FC<Props> = ({open = false, onClose, onCreate}) => {
         {error && <Alert severity='error'>{error.message}</Alert>}
 
         <Button
-          className='text-text-light'
           type='submit'
           fullWidth
           variant='contained'
           sx={{mt: 3, mb: 2}}
-          disabled={!formik.isValid}
+          disabled={!formik.isValid || !selectedBackground}
         >
           Создать
         </Button>

@@ -1,0 +1,9 @@
+mutation CreateInviteLink ($boardId: String!) {
+    createInviteLink(_id: $boardId) {
+        _id
+        background
+        defaultRole
+        inviteLink
+        name
+    }
+}

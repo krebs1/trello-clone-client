@@ -21,21 +21,20 @@ const CPopover: FC<Props> = ({...props}) => {
              sx={{
                '& .MuiPopover-paper': {
                  borderRadius: "0.5rem",
-                 backgroundColor: "rgb(59 68 76)",
                  padding: "12px"
                }
              }}
     >
-      <header className='tw-grid tw-gap-3 tw-grid-cols-[min-content_1fr_min-content] tw-text-text-light tw-items-center tw-mb-2'>
+      <header className='tw-grid tw-gap-3 tw-grid-cols-[min-content_1fr_min-content] tw-items-center tw-mb-2'>
         {
           props.isGoBack &&
-            <IconButton className='tw-text-text-light tw-text-base' onClick={props.onGoBack}>
+            <IconButton className='tw-text-base' onClick={props.onGoBack}>
                 <ArrowBackIosIcon fontSize='small'/>
             </IconButton>
         }
         {
           !props.isGoBack &&
-          <Box className='tw-w-9 tw-h-9'/>
+            <Box className='tw-w-9 tw-h-9'/>
         }
         <Typography variant='h6'
                     className='tw-text-base tw-flex tw-justify-center'
@@ -44,8 +43,11 @@ const CPopover: FC<Props> = ({...props}) => {
             props.title
           }
         </Typography>
-        <IconButton className='tw-text-text-light tw-text-base' onClick={props.handleClose}>
-          <CloseIcon  fontSize='small'/>
+        <IconButton
+          className='tw-text-base'
+          onClick={props.handleClose}
+        >
+          <CloseIcon fontSize='small'/>
         </IconButton>
       </header>
       {

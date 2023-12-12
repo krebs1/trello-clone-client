@@ -2,6 +2,11 @@ subscription BoardModified($id: String!) {
     boardModified(boardId: $id) {
         _id
         background
+        backgroundInfo {
+            _id
+            imagePath
+            previewPath
+        }
         name
         lists {
             _id
@@ -28,6 +33,7 @@ subscription BoardModified($id: String!) {
         members {
             _id
             userId
+            role
             userInfo {
                 _id
                 email
@@ -36,5 +42,7 @@ subscription BoardModified($id: String!) {
                 name
             }
         }
+        inviteLink
+        defaultRole
     }
 }

@@ -11,24 +11,11 @@ const SignUpPage = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
         }}
       >
-        <Typography component='h1' variant='h5'>
-          Регистрация
-        </Typography>
         <ApolloWrapper>
           <SignUpForm/>
         </ApolloWrapper>
-        <Grid className='tw-mt-4' container>
-          <Grid item xs>
-            <Link href='#' variant='body2'>
-              Уже есть аккаунт? Войдите!
-            </Link>
-          </Grid>
-        </Grid>
       </Box>
     </Container>
   );

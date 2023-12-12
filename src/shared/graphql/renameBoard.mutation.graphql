@@ -1,0 +1,10 @@
+mutation RenameBoard ($boardId: String!, $boardName: String!) {
+    renameBoard(
+        boardId: $boardId
+        renameBoardInput: { _id: $boardId, name: $boardName }
+    ) {
+        _id
+        background
+        name
+    }
+}

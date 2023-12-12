@@ -28,6 +28,7 @@ query FindBoardById ($id: String!) {
         members {
             _id
             userId
+            role
             userInfo {
                 _id
                 email
@@ -36,5 +37,7 @@ query FindBoardById ($id: String!) {
                 name
             }
         }
+        inviteLink
+        defaultRole
     }
 }

@@ -17,29 +17,11 @@ const LoginPage = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
         }}
       >
-        <Typography component='h1' variant='h5'>
-          Вход в личный кабинет
-        </Typography>
         <ApolloWrapper>
           <LoginForm/>
         </ApolloWrapper>
-        <Grid className='tw-mt-4' container>
-          <Grid item xs>
-            <Link href='#' variant='body2'>
-              Забыли пароль?
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link href='#' variant='body2'>
-              {'Нет аккаунта? Создайте!'}
-            </Link>
-          </Grid>
-        </Grid>
       </Box>
     </Container>
   )

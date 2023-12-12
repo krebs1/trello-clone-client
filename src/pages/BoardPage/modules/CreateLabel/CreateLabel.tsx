@@ -5,13 +5,13 @@ import {Color, useCreateLabelMutation, useFindAllColorsQuery} from "@/src/shared
 import {Box, Button, CircularProgress, PopoverProps, TextField, Tooltip, Typography} from "@mui/material";
 import {CPopover} from "@/src/components/Popover";
 
-interface Props{
+interface Props {
   boardId: string,
   cardId: string,
-  closeCreating: ()=>void,
+  closeCreating: () => void,
 }
 
-const CreateLabel:FC<Props> = ({boardId, cardId, closeCreating}) => {
+const CreateLabel: FC<Props> = ({boardId, cardId, closeCreating}) => {
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [labelName, setLabelName] = useState<string>('');
 
@@ -39,39 +39,35 @@ const CreateLabel:FC<Props> = ({boardId, cardId, closeCreating}) => {
       </Box>
       <Box>
         <Box className='tw-mb-2'>
-          <Typography className='tw-text-xs tw-text-text-subtitle tw-mb-1'>
+          <Typography className='tw-text-xs tw-mb-1'>
             Название
           </Typography>
-          <TextField sx={{
-            "& .MuiOutlinedInput-root.Mui-focused": {
-              "& > fieldset": {
-                border: "1px solid #1976D2"
-              }
-            },
-            "& .MuiOutlinedInput-root": {
-              "& > input": {
-                fontSize: "14px",
-                padding: "0.375rem",
-                paddingLeft: "0.750rem"
+          <TextField
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused": {
+                "& > fieldset": {}
               },
-              "& > fieldset": {
-                border: "1px solid #1976D2",
+              "& .MuiOutlinedInput-root": {
+                "& > input": {
+                  fontSize: "14px",
+                  padding: "0.375rem",
+                  paddingLeft: "0.750rem"
+                },
+                "& > fieldset": {}
               }
-            }
-          }}
-                     inputProps={{className: 'tw-text-text-light'}}
-                     fullWidth
-                     placeholder='Название метки'
-                     variant="outlined"
-                     type='text'
-                     value={labelName}
-                     onChange={(e) => {
-                       setLabelName(e.target.value)
-                     }}
+            }}
+            fullWidth
+            placeholder='Название метки'
+            variant="outlined"
+            type='text'
+            value={labelName}
+            onChange={(e) => {
+              setLabelName(e.target.value)
+            }}
           />
         </Box>
         <Box className='tw-mb-2'>
-          <Typography className='tw-text-xs tw-text-text-subtitle tw-mb-1'>
+          <Typography className='tw-text-xs tw-mb-1'>
             Цвета
           </Typography>
           {
@@ -87,14 +83,15 @@ const CreateLabel:FC<Props> = ({boardId, cardId, closeCreating}) => {
                     {
                       data.findAllColors.map((color) => (
                         <Tooltip key={color._id} title={color.name} placement="bottom">
-                          <Box className={'tw-w-12 tw-h-7 tw-rounded tw-cursor-pointer'}
-                               style={{
-                                 backgroundColor: color.color,
-                                 border: selectedColor?._id === color._id ? '1px solid #1976d2' : 'none'
-                               }}
-                               onClick={() => {
-                                 setSelectedColor(color)
-                               }}
+                          <Box
+                            className='tw-w-12 tw-h-7 tw-rounded tw-cursor-pointer'
+                            style={{
+                              backgroundColor: color.color,
+                              border: selectedColor?._id === color._id ? '1px solid #1976d2' : 'none'
+                            }}
+                            onClick={() => {
+                              setSelectedColor(color)
+                            }}
                           >
 
                           </Box>
@@ -102,31 +99,33 @@ const CreateLabel:FC<Props> = ({boardId, cardId, closeCreating}) => {
                       ))
                     }
                   </Box>
-                  <Button variant='contained'
-                          onClick={()=>{
-                            setSelectedColor(null)
-                          }}
-                          fullWidth
-                          className='tw-bg-card-bg tw-text-xs tw-text-text-subtitle'
+                  <Button
+                      variant='contained'
+                      onClick={() => {
+                        setSelectedColor(null)
+                      }}
+                      fullWidth
+                      className='tw-text-xs'
                   >
                       Без цвета
                   </Button>
               </Box>
           }
         </Box>
-        <Button variant='contained'
-                onClick={async ()=>{
-                  await createLabel({
-                    variables: {
-                      boardId: boardId,
-                      colorId: selectedColor?._id,
-                      text: labelName
-                    }
-                  })
-                  closeCreating();
-                }}
-                disabled={!(selectedColor)}
-                fullWidth
+        <Button
+          variant='contained'
+          onClick={async () => {
+            await createLabel({
+              variables: {
+                boardId: boardId,
+                colorId: selectedColor?._id!,
+                text: labelName
+              }
+            })
+            closeCreating();
+          }}
+          disabled={!(selectedColor)}
+          fullWidth
         >
           Создать
         </Button>

@@ -1,0 +1,7 @@
+query FindBackgroundById($id: String!) {
+    findBackgroundById(_id: $id) {
+        _id
+        imagePath
+        previewPath
+    }
+}

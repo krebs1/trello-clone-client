@@ -47,108 +47,107 @@ const AddDate: FC<Props> = (props) => {
       >
         Даты
       </LeftContentButton>
-      <CPopover title='Даты'
-                handleClose={handlePopoverClose}
-                open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
+      <CPopover
+        title='Даты'
+        handleClose={handlePopoverClose}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs}
-                              dateFormats={{
-                                keyboardDateTime24h: 'DD:MM:YYYY HH:MM'
-                              }}
-                              adapterLocale='ru'
+        <LocalizationProvider
+          dateAdapter={AdapterDayjs}
+          dateFormats={{
+            keyboardDateTime24h: 'DD:MM:YYYY HH:MM'
+          }}
+          adapterLocale='ru'
         >
           <Box className='tw-mb-2'>
-            <Typography className='tw-text-text-subtitle tw-text-xs tw-mb-1'>
+            <Typography className='tw-text-xs tw-mb-1'>
               Начало
             </Typography>
-            <DateTimePicker className='tw-text-text-light tw-border-text-light'
-                            format='DD.MM.YYYY hh:mm'
-                            value={startDate}
-                            onChange={(value) => {
-                              setStartDate(value)
-                            }}
-                            ampm={false}
-                            sx={{
-                              "& .MuiOutlinedInput-root.Mui-focused": {
-                                "& > fieldset": {
-                                  border: "1px solid #1976D2"
-                                }
-                              },
-                              "& .MuiOutlinedInput-root": {
-                                "& > input": {
-                                  fontSize: "14px",
-                                  color: "#dadade"
-                                },
-                                "& > fieldset": {
-                                  border: "1px solid #dadade",
-                                },
-                                "& > div": {
-                                  "& .MuiIconButton-root": {
-                                    color: "#dadade"
-                                  },
-                                }
-                              }
-                            }}
+            <DateTimePicker
+              className='tw-border-text-light'
+              format='DD.MM.YYYY hh:mm'
+              value={startDate}
+              onChange={(value) => {
+                setStartDate(value)
+              }}
+              ampm={false}
+              sx={{
+                "& .MuiOutlinedInput-root.Mui-focused": {
+                  "& > fieldset": {
+                    border: "1px solid #1976D2"
+                  }
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& > input": {
+                    fontSize: "14px",
+                  },
+                  "& > fieldset": {
+                    border: "1px solid #dadade",
+                  },
+                  "& > div": {
+                    "& .MuiIconButton-root": {},
+                  }
+                }
+              }}
             />
           </Box>
           <Box className='tw-mb-2'>
-            <Typography className='tw-text-text-subtitle tw-text-xs tw-mb-1'>
+            <Typography className='tw-text-xs tw-mb-1'>
               Конец
             </Typography>
             <Box>
-              <DateTimePicker className='tw-text-text-light tw-border-text-light'
-                              format='DD.MM.YYYY hh:mm'
-                              value={dueDate}
-                              onChange={(value) => {
-                                setDueDate(value)
-                              }}
-                              ampm={false}
-                              sx={{
-                                "& .MuiOutlinedInput-root.Mui-focused": {
-                                  "& > fieldset": {
-                                    border: "1px solid #1976D2"
-                                  }
-                                },
-                                "& .MuiOutlinedInput-root": {
-                                  "& > input": {
-                                    fontSize: "14px",
-                                    color: "#dadade"
-                                  },
-                                  "& > fieldset": {
-                                    border: "1px solid #dadade",
-                                  },
-                                  "& > div": {
-                                    "& .MuiIconButton-root": {
-                                      color: "#dadade"
-                                    },
-                                  }
-                                }
-                              }}
+              <DateTimePicker
+                className='tw-border-text-light'
+                format='DD.MM.YYYY hh:mm'
+                value={dueDate}
+                onChange={(value) => {
+                  setDueDate(value)
+                }}
+                ampm={false}
+                sx={{
+                  "& .MuiOutlinedInput-root.Mui-focused": {
+                    "& > fieldset": {
+                      border: "1px solid #1976D2"
+                    }
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& > input": {
+                      fontSize: "14px",
+                    },
+                    "& > fieldset": {
+                      border: "1px solid #dadade",
+                    },
+                    "& > div": {
+                      "& .MuiIconButton-root": {},
+                    }
+                  }
+                }}
               />
             </Box>
           </Box>
-          <Button onClick={async () => {
-            await changeCardDate({
-              variables: {
-                boardId: props.boardId,
-                listId: props.listId,
-                cardId: props.cardId,
-                startDate: startDate,
-                dueDate: dueDate,
-              }
-            })
-          }}
-                  fullWidth
-                  variant='contained'
+          <Button
+            onClick={async () => {
+              await changeCardDate({
+                variables: {
+                  boardId: props.boardId,
+                  listId: props.listId,
+                  cardId: props.cardId,
+                  startDate: startDate,
+                  dueDate: dueDate,
+                }
+              })
+            }}
+            fullWidth
+            variant='contained'
           >
             Сохранить
           </Button>

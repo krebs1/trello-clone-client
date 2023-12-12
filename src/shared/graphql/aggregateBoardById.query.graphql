@@ -2,6 +2,11 @@ query AggregateBoardById($bid: String!) {
     aggregateBoardById(_id: $bid) {
         _id
         background
+        backgroundInfo {
+            _id
+            imagePath
+            previewPath
+        }
         name
         labels {
             _id
@@ -28,6 +33,7 @@ query AggregateBoardById($bid: String!) {
         members {
             _id
             userId
+            role
             userInfo {
                 _id
                 email
@@ -36,5 +42,7 @@ query AggregateBoardById($bid: String!) {
                 name
             }
         }
+        inviteLink
+        defaultRole
     }
 }

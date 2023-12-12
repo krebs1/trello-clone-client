@@ -16,10 +16,7 @@ export const authCfg: AuthOptions = {
   },
   callbacks: {
     session: async ({session, token, user}) => {
-      if (session?.user) {
-        // @ts-ignore
-        session.user.id = user.id
-      }
+      session.user.id = user.id
       return session
     },
   },

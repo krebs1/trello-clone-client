@@ -1,18 +1,17 @@
 'use client'
 
 import React from 'react'
-import {LoginPage} from '@/src/pages/LoginPage'
 import {CModal} from "@/src/components/Modal";
 import {useRouter} from "next/navigation";
-import {LoginForm} from "@/src/modules/LoginForm";
+import {SignUpForm} from "@/src/pages/SignUpPage/modules/SignUpForm";
 
-const LoginPageNext = () => {
+const Page = () => {
   const router = useRouter();
   return (
     <CModal open={true} onClose={()=>{router.back()}} header=''>
-      <LoginForm/>
+      <SignUpForm/>
     </CModal>
   )
 }
 
-export default LoginPageNext
+export default Page
